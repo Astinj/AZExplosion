@@ -40,13 +40,12 @@ public class ExplosionAnimator extends ValueAnimator{
         int bitmap_part_h = bitmap.getHeight() / partH_Count;
 
         Particle[][] particles = new Particle[partH_Count][partW_Count];
-        Point point = null;
         for (int row = 0; row < partH_Count; row ++) { //行
             for (int column = 0; column < partW_Count; column ++) { //列
                 //取得当前粒子所在位置的颜色
                 int color = bitmap.getPixel(column * bitmap_part_w, row * bitmap_part_h);
 
-                point = new Point(column, row); //x是列，y是行
+                Point point = new Point(column, row); //x是列，y是行
 
                 particles[row][column] = Particle.generateParticle(color, bound, point);
             }
