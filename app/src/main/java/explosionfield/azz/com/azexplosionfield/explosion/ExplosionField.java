@@ -22,7 +22,7 @@ import explosionfield.azz.com.azexplosionfield.utils.Utils;
 public class ExplosionField extends View{
     private static final String TAG = "ExplosionField";
     private static final Canvas mCanvas = new Canvas();
-    private ArrayList<ExplosionAnimator> explosionAnimators;
+    private ArrayList<ExplosionAnimator> mExplosionAnimators;
     private View.OnClickListener onClickListener;
 
     public ExplosionField(Context context) {
@@ -35,14 +35,15 @@ public class ExplosionField extends View{
         init();
     }
     private void init() {
-        explosionAnimators = new ArrayList<ExplosionAnimator>();
+        mExplosionAnimators = new ArrayList<ExplosionAnimator>();
 
         attach2Activity((Activity) getContext());
     }
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (ExplosionAnimator animator : explosionAnimators) {
+        for (int i = 0; i < mExplosionAnimators.size(); i++) {
+            ExplosionAnimator animator = mExplosionAnimators.get(i);
             animator.draw(canvas);
         }
     }
@@ -54,10 +55,11 @@ public class ExplosionField extends View{
     public void explode(final View view) {
         Rect rect = new Rect();
         view.getGlobalVisibleRect(rect); //得到view相对于整个屏幕的坐标
-        rect.offset(0, -Utils.dp2px(25)); //去掉状态栏高度
+        int statusbarHeight = Utils.getStatusBarHeight();
+        rect.offset(0, -statusbarHeight); //去掉状态栏高度
 
         final ExplosionAnimator animator = new ExplosionAnimator(this, createBitmapFromView(view), rect);
-        explosionAnimators.add(animator);
+        mExplosionAnimators.add(animator);
 
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -70,7 +72,7 @@ public class ExplosionField extends View{
                 view.animate().alpha(1f).setDuration(150).start();
 
                 //动画结束时从动画集中移除
-                explosionAnimators.remove(animation);
+                mExplosionAnimators.remove(animation);
                 animation = null;
             }
         });
