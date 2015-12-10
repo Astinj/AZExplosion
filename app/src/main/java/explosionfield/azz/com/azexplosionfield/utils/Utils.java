@@ -14,4 +14,13 @@ public class Utils {
     public static int dp2px(int dp) {
         return Math.round(dp * DENSITY);
     }
+
+    public static final int getStatusBarHeight() {
+        int resourceId = Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return getResources().getDimensionPixelSize(resourceId);
+        } else {
+            return 0;
+        }
+    }
 }
